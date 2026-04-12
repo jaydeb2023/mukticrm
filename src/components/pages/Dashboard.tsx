@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/lib/auth';
 
+// Helper: convert supabase query builder to a proper Promise
+function q(query: any): Promise<any> {
+  return Promise.resolve(query);
+}
+
 export default function Dashboard() {
   const { user, isSuperAdmin, canSeeFresh, canSeeKitchen, canSeeMarket } = useAuth();
   const [stats, setStats] = useState<any>({});
@@ -23,30 +28,30 @@ export default function Dashboard() {
 
       if (canSeeFresh) {
         queries.push(
-          supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('is_junk', false),
-          supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('status', 'interested'),
-          supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('followup_date', today).not('status', 'in', '("closed","junk")'),
-          supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').lt('followup_date', today).not('status', 'in', '("closed","junk")'),
-          supabase.from('complaints').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('status', 'open'),
-          supabase.from('customers').select('id', { count: 'exact' }).eq('business', 'muktifresh'),
+          q(supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('is_junk', false)),
+          q(supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('status', 'interested')),
+          q(supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('followup_date', today).not('status', 'in', '("closed","junk")')),
+          q(supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'muktifresh').lt('followup_date', today).not('status', 'in', '("closed","junk")')),
+          q(supabase.from('complaints').select('id', { count: 'exact' }).eq('business', 'muktifresh').eq('status', 'open')),
+          q(supabase.from('customers').select('id', { count: 'exact' }).eq('business', 'muktifresh')),
         );
         keys.push('freshLeads','freshInterested','freshDueToday','freshOverdue','freshComplaints','freshCustomers');
       }
 
       if (canSeeKitchen) {
         queries.push(
-          supabase.from('kitchen_orders').select('id', { count: 'exact' }).in('order_status', ['new','confirmed','preparing','ready']),
-          supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'cloud_kitchen').eq('is_junk', false),
-          supabase.from('complaints').select('id', { count: 'exact' }).eq('business', 'cloud_kitchen').eq('status', 'open'),
+          q(supabase.from('kitchen_orders').select('id', { count: 'exact' }).in('order_status', ['new','confirmed','preparing','ready'])),
+          q(supabase.from('leads').select('id', { count: 'exact' }).eq('business', 'cloud_kitchen').eq('is_junk', false)),
+          q(supabase.from('complaints').select('id', { count: 'exact' }).eq('business', 'cloud_kitchen').eq('status', 'open')),
         );
         keys.push('kitchenActive','kitchenLeads','kitchenComplaints');
       }
 
       if (canSeeMarket) {
         queries.push(
-          supabase.from('market_dispatches').select('id', { count: 'exact' }).eq('dispatch_date', today),
-          supabase.from('market_dispatches').select('id', { count: 'exact' }).eq('dispatch_date', today).eq('discrepancy_flagged', true),
-          supabase.from('market_sales').select('total_amount').eq('sale_date', today),
+          q(supabase.from('market_dispatches').select('id', { count: 'exact' }).eq('dispatch_date', today)),
+          q(supabase.from('market_dispatches').select('id', { count: 'exact' }).eq('dispatch_date', today).eq('discrepancy_flagged', true)),
+          q(supabase.from('market_sales').select('total_amount').eq('sale_date', today)),
         );
         keys.push('todayDispatches','flaggedDispatches','todaySales');
       }
