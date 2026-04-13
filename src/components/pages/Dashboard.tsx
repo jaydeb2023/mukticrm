@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { loginUser, Role } from '@/lib/neonbase';
 import { useAuth } from '@/lib/auth';
 
 // Helper: convert supabase query builder to a proper Promise
