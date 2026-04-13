@@ -8,7 +8,10 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: '*.supabase.co' },
+      // Remove Supabase storage pattern if you're not using it
+      // { protocol: 'https', hostname: '*.supabase.co' },
+      // Add Neon / your own CDN here if needed later, e.g.:
+      // { protocol: 'https', hostname: 'your-cdn.example.com' },
     ],
   },
 };
