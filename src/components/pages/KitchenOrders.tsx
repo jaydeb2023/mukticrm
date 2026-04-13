@@ -1,7 +1,7 @@
 // KitchenOrders.tsx
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/lib/neonbase';
 import { useAuth } from '@/lib/auth';
 import { showToast } from '../Toast';
 
