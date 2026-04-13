@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase, Product, Market, User } from '@/lib/supabase';
+import { Product, Market, User } from '@/lib/neonbase'; // or wherever you keep types
+import { getProducts, getMarkets, getUsers } from '@/lib/neonbase'; // or whatever you call them
 import { useAuth } from '@/lib/auth';
 import { showToast } from '../Toast';
 
