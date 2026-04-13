@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useAuth } from '@/lib/auth';
-import { loginUser, Role } from '@/lib/db'; // or your new Neon‑layer file
+import { loginUser, Role } from '@/lib/supabase';
 
 const ROLES: { value: Role; label: string; color: string; desc: string }[] = [
   { value: 'super_admin',    label: 'Super Admin',     color: '#a855f7', desc: 'Full access — both businesses' },
