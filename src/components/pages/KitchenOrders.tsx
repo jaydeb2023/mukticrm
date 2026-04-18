@@ -1,7 +1,6 @@
-// KitchenOrders.tsx
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/neonbase';
+import { getKitchenOrders, createKitchenOrder, updateKitchenOrderStatus } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { showToast } from '../Toast';
 
